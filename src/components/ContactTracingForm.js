@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import TextField from '@mui/material/TextField';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
@@ -13,6 +13,8 @@ import countryData from "../data/Countries";
 import styled from "styled-components";
 import Notice from "./Notice";
 import LoadingButton from '@mui/lab/LoadingButton';
+import HandleCookie from "../classes/HandleCookie";
+import API from "../data/API";
 
 const Form = styled.form`
   width: 100%;
@@ -23,7 +25,8 @@ const FormInput = styled.div`
   margin-bottom: 8px;
 `;
 
-function ContactTracingForm({ storeId, submitFormData, setOverlayModal, setLoaderStatus }) {
+function ContactTracingForm({ storeId, setOverlayModal, setLoaderStatus }) {
+  const history = useHistory();
   
   const [formData, setFormData] = useState({
     firstName: '',
@@ -52,10 +55,6 @@ function ContactTracingForm({ storeId, submitFormData, setOverlayModal, setLoade
   })
 
   const [loading, setLoading] = useState(false);
-
-  function handleClick() {
-    setLoading(true);
-  }
 
   function handleChange(e) {
     const name = e.target.name;
@@ -193,11 +192,47 @@ function ContactTracingForm({ storeId, submitFormData, setOverlayModal, setLoade
     preValidate();
 
     if (Object.keys(formErrors).filter(key => formErrors[key] !== null).length > 0 || formData.phone.length < 5) {
-
+      setOverlayModal({
+        active: true,
+        title: 'Oops!',
+        message: 'Please provide required information in the proper format.'
+      })
     } else {
+      setLoading(true);
       submitFormData(formData);
     }
 
+  }
+
+  function submitFormData(dataObj) {
+    setLoaderStatus(true);
+    
+    let sendData = new FormData();
+    Object.keys(dataObj).forEach(inputName => {
+      let value = dataObj[inputName];
+      if (inputName === "phone") {
+        value = dataObj.phone.replace(/\D/g,'');
+      }
+      sendData.append(inputName, value);
+    })
+
+    fetch(API.newCustomer, { method: 'POST', body: sendData })
+      .then(res => res.json())
+      .then(json => {
+        setLoaderStatus(false);
+        const data = json.message.data;
+        HandleCookie.set('preCheckId', data.preCheckId, 365);
+        history.push(`/${storeId}/checkin/${data.preCheckId}`);
+      })
+      .catch(err => {
+        setLoaderStatus(false);
+        setLoading(false);
+        setOverlayModal({
+          active: true,
+          title: 'Oops!',
+          message: `Something went wrong (${err.message})`
+        })
+      })
   }
 
   function renderTextField(id, name, label, required=true) {
@@ -236,7 +271,7 @@ function ContactTracingForm({ storeId, submitFormData, setOverlayModal, setLoade
   })
 
   return (
-    <Form id="contact-tracing-form" onSubmit={handleSubmit} disabled>
+    <Form onSubmit={handleSubmit}>
       <Notice color="yellow">
         ⓘ Local mandates <a href="https://www.hawaiinewsnow.com/2020/09/23/under-order-oahu-restaurants-will-have-keep-diners-contact-details-days/" target="_blank" rel="noreferrer">require restauraunts to collect contact information</a> from one member of each dining party. Please fill out the questionnaire below.
       </Notice>
@@ -297,7 +332,7 @@ function ContactTracingForm({ storeId, submitFormData, setOverlayModal, setLoade
         </FormGroup>
       </FormInput>
       <hr />
-      <LoadingButton variant="contained" disableElevation className="primaryBtn" onClick={handleClick} loading={loading}>Next</LoadingButton>
+      <LoadingButton variant="contained" disableElevation className="primaryBtn" loading={loading} type="submit">Next</LoadingButton>
       <p>
       By submitting this form, you are agreeing to our <a href="https://www.genkisushiusa.com/privacy" target="_blank" rel="noreferrer">privacy policy</a>.
       </p>
