@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { 
   BrowserRouter as Router, 
   Route, 
@@ -8,18 +8,25 @@ import "./style/App.css";
 
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import Loader from "./components/Loader";
+import Overview from "./components/Overview";
+import LocationRouter from "./components/LocationRouter";
 
 function App() {
+
+  const [loaderStatus, setLoaderStatus] = useState(false);
+
   return (
     <Router>
+      <Loader active={loaderStatus} />
       <Header />
       <main>
         <Switch>
           <Route path="/:storeId">
-            Store Path
+            <LocationRouter setLoaderStatus={setLoaderStatus} />
           </Route>
           <Route path="/" exact>
-            Overview Path
+            <Overview />
           </Route>
         </Switch>
       </main>
