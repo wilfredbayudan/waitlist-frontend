@@ -11,19 +11,26 @@ import Footer from "./components/Footer";
 import Loader from "./components/Loader";
 import Overview from "./components/Overview";
 import LocationRouter from "./components/LocationRouter";
+import OverlayModal from "./components/OverlayModal";
 
 function App() {
 
   const [loaderStatus, setLoaderStatus] = useState(false);
+  const [overlayModal, setOverlayModal] = useState({
+    active: false,
+    title: 'Overlay Title',
+    message: 'Overlay Message'
+  })
 
   return (
     <Router>
+      <OverlayModal overlayModal={overlayModal} setOverlayModal={setOverlayModal} />
       <Loader active={loaderStatus} />
       <Header />
       <main>
         <Switch>
           <Route path="/:storeId">
-            <LocationRouter setLoaderStatus={setLoaderStatus} />
+            <LocationRouter setLoaderStatus={setLoaderStatus} setOverlayModal={setOverlayModal} />
           </Route>
           <Route path="/" exact>
             <Overview />

@@ -15,10 +15,16 @@ const Section = styled.section`
   }
 `;
 
+const Title = styled.h2`
+  margin: 0 auto 15px auto;
+  padding: 20px;
+  border-bottom: 3px solid #ebebeb;
+`;
+
 function Card ({ title, fullWidth, children }) {
   return (
     <Section fullWidth={fullWidth}>
-      <h2>{title}</h2>
+      <Title>{title}</Title>
       {children}
     </Section>
   )

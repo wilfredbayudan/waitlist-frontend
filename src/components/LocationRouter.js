@@ -3,8 +3,9 @@ import { Switch, Route, useParams, useRouteMatch } from "react-router-dom";
 import Location from "../classes/Location";
 import Card from "./Card";
 import LocationStatus from "./LocationStatus";
+import Join from "./Join";
 
-function LocationRouter({ setLoaderStatus }) {
+function LocationRouter({ setLoaderStatus, setOverlayModal }) {
   const match = useRouteMatch();
   const storeIdParam = useParams().storeId;
 
@@ -13,13 +14,13 @@ function LocationRouter({ setLoaderStatus }) {
     return (
       <Switch>
         <Route path={`${match.url}/join`}>
-          Join Path for {storeIdParam}
+          <Join storeId={storeIdParam} setLoaderStatus={setLoaderStatus} setOverlayModal={setOverlayModal} />
         </Route>
         <Route path={`${match.url}/checkin`}>
           Check In Path {storeIdParam}
         </Route>
         <Route path={`${match.url}`} exact>
-          <LocationStatus storeId={storeIdParam} setLoaderStatus={setLoaderStatus} />
+          <LocationStatus storeId={storeIdParam} setLoaderStatus={setLoaderStatus} setOverlayModal={setOverlayModal} />
         </Route>
       </Switch>
     )

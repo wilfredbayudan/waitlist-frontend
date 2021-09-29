@@ -28,9 +28,24 @@ main {
   margin-top: 60px;
 }
 a {
-  color: #e78823;
+  color:#a7261d;
   text-decoration: none;
 }
 a:hover {
-  color: #a7261d;
+  color: #e78823;
+}
+html body div#root main section .primaryBtn {
+  background-color: #4CAF50;
+  width: 100%;
+  margin-top: 5px;
+}
+html body div#root main section .primaryBtn:hover {
+  background-color: #5ac25d;
+}
+html body div#root main section .primaryBtn:disabled {
+  background-color: #e0e0e0;
+}
+section hr {
+  border: 2px solid #ebebeb;
+  margin-top: 20px;
 }
