@@ -88,17 +88,17 @@ function ContactTracingForm({ storeId, setOverlayModal, setLoaderStatus }) {
     let errorMessage;
     switch(inputName) {
       case 'firstName':
-        regex = /^[a-zA-Z][a-zA-Z '`]{1,32}$/
+        regex = /^[a-zA-Z][a-zA-Z ]{1,32}$/
         result = regex.test(inputValue);
         if (!result) {
-          errorMessage = 'Please enter a valid first name.';
+          errorMessage = 'Please enter a valid first name. Special characters not allowed.';
         }
         break;
       case 'lastName':
-        regex = /^[a-zA-Z][a-zA-Z '`]{1,32}$/
+        regex = /^[a-zA-Z][a-zA-Z ]{1,32}$/
         result = regex.test(inputValue);
         if (!result) {
-          errorMessage = 'Please enter a valid last name.';
+          errorMessage = 'Please enter a valid last name. Special characters not allowed.';
         }
         break;
       case 'addressStreet':
@@ -116,7 +116,7 @@ function ContactTracingForm({ storeId, setOverlayModal, setLoaderStatus }) {
         }
         break;
       case 'addressState':
-        regex = /^[a-zA-Z '`-]{2,32}$/
+        regex = /^[a-zA-Z -]{2,32}$/
         result = regex.test(inputValue);
         if (!result) {
           errorMessage = 'Please enter a valid state / province.';
@@ -207,6 +207,8 @@ function ContactTracingForm({ storeId, setOverlayModal, setLoaderStatus }) {
   function submitFormData(dataObj) {
     setLoaderStatus(true);
     
+    console.log(dataObj);
+
     let sendData = new FormData();
     Object.keys(dataObj).forEach(inputName => {
       let value = dataObj[inputName];
@@ -221,6 +223,7 @@ function ContactTracingForm({ storeId, setOverlayModal, setLoaderStatus }) {
       .then(json => {
         setLoaderStatus(false);
         const data = json.message.data;
+        console.log(data);
         HandleCookie.set('preCheckId', data.preCheckId, 365);
         history.push(`/${storeId}/checkin/${data.preCheckId}`);
       })

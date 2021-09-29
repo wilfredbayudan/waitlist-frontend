@@ -45,6 +45,13 @@ html body div#root main section .primaryBtn:hover {
 html body div#root main section .primaryBtn:disabled {
   background-color: #e0e0e0;
 }
+html body div#root main section .secondaryBtn {
+  background-color: #b6e5e0c2;
+  color: #1a1a1a;
+}
+html body div#root main section .secondaryBtn:hover {
+  background-color: #a4e2dbc2;
+}
 section hr {
   border: 2px solid #ebebeb;
   margin-top: 20px;

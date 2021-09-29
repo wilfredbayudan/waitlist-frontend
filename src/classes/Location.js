@@ -33,8 +33,12 @@ class Location {
 
   static async isOpen(storeId) {
     return this.getWaitlist(storeId)
-      .then(res => console.log(res))
-      .catch(err => console.log(err))
+      .then(res => {
+        return res.isWaitlistOpen;
+      })
+      .catch(err => {
+        throw new Error(`Failed to retrieve status for Store #${storeId} (${err.message})`)
+      })
   }
 
 

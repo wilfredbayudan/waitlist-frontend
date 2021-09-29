@@ -24,7 +24,7 @@ function OverlayModal({ overlayModal, setOverlayModal }) {
         ...overlayModal,
         active: false
       })
-    }, 2500)
+    }, 3500)
 
     return (() => {
       clearTimeout(timer);

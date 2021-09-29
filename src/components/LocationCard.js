@@ -24,7 +24,7 @@ function LocationCard({ storeId, locationData }) {
   function handleJoinClick() {
     let nextStep = Location.info(storeId).contactTracing ? 'join' : 'checkin';
     // If PreCheckID Cookie Exists, also push to checkin
-    history.push(`${storeId}/${nextStep}`);
+    history.push(`/${storeId}/${nextStep}`);
   }
 
   const isOpen = locationData.isWaitlistOpen;
