@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import Card from "./Card";
 import Location from "../classes/Location";
 import styled from "styled-components";
-import Button from '@mui/material/Button';
+import HandleCookie from "../classes/HandleCookie";
+import API from "../data/API";
+import Notice from "./Notice";
+import LoadingButton from '@mui/lab/LoadingButton';
 
 const StatusSpan = styled.span`
   color: ${props => props.isOpen ? '#1fa753' : '#920909'};
@@ -18,22 +21,74 @@ const NumWaiting = styled.h4`
   border-radius: 3px;
 `;
 
-function LocationCard({ storeId, locationData }) {
+function LocationCard({ storeId, locationData, setOverlayModal }) {
   const history = useHistory();
+  const [isWaiting, setIsWaiting] = useState(false);
+  const isOpen = locationData.isWaitlistOpen;
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const locationCookie = HandleCookie.get('locationId');
+    const customerIdCookie = HandleCookie.get('customerId')
+    if (locationCookie === Location.info(storeId).waitwhileId && customerIdCookie !== "") {
+      setLoading(true);
+      // Check if current user is already on the waitlist
+      fetch(`${API.customerStatus}?customerId=${customerIdCookie}`)
+        .then(res => res.json())
+        .then(json => {
+          const results = json.results;
+          setLoading(false);
+          if (results.length === 0) {
+            setIsWaiting(false);
+            return;
+          }
+          if (results[0].locationId === Location.info(storeId).waitwhileId) {
+            setIsWaiting(results[0]);
+          }
+        })
+        .catch(err => {
+          setLoading(false);
+          setOverlayModal({
+            active: true,
+            title: 'Oops',
+            message: err.message
+          })
+        });
+    }
+  }, [storeId, setOverlayModal]);
 
   function handleJoinClick() {
     let nextStep = Location.info(storeId).contactTracing ? 'join' : 'checkin';
     // If PreCheckID Cookie Exists, also push to checkin
+    if (HandleCookie.get('preCheckId')) {
+      console.log('Hi')
+      nextStep = `checkin/${HandleCookie.get('preCheckId')}`;
+    }
     history.push(`/${storeId}/${nextStep}`);
   }
 
-  const isOpen = locationData.isWaitlistOpen;
+  const renderJoinButton = (
+    <LoadingButton variant="contained" disableElevation className="primaryBtn" loading={loading} disabled={!isOpen} onClick={handleJoinClick}>Join Waitlist</LoadingButton>
+  )
+
+  const renderAlreadyWaiting = () => {
+    const ticketUrl = `https://app.waitwhile.com/l/${Location.info(storeId).shortName}/${isWaiting.publicId}`;
+    return (
+      <>
+      <Notice color="#f1f1f1">
+        Hey {isWaiting.firstName}, you are currently <b>#{isWaiting.position}</b> in line.
+      </Notice>
+      <a href={ticketUrl} alt="Virtual Ticket"><LoadingButton variant="contained" disableElevation className="primaryBtn">View Virtual Ticket</LoadingButton></a>
+      </>
+    )
+  }
+
   return (
     <Card title={Location.info(storeId).name}>
       Our waitlist is <StatusSpan isOpen={isOpen}>{isOpen ? 'open' : 'closed'}</StatusSpan> and there are
       <NumWaiting>{locationData.numWaiting}</NumWaiting>
       parties waiting
-      <Button variant="contained" disableElevation className="primaryBtn" disabled={!isOpen} onClick={handleJoinClick}>Join Waitlist</Button>
+      { isWaiting ? renderAlreadyWaiting() : renderJoinButton }
     </Card>
   )
 }

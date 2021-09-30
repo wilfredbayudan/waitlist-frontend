@@ -71,9 +71,7 @@ function CheckInForm({ preCheckParams, storeId, setCheckedIn, contactTracing, se
   useEffect(() => {
     if (nameInput.length > 0) {
       const regex = /^[a-zA-Z][a-zA-Z ]{4,45}$/
-      console.log(nameInput)
       if (!regex.test(nameInput)) {
-        console.log('ERROR')
         setNameError('Please enter a valid name. Special characters not allowed.')
       } else {
         setNameError(false)
@@ -108,7 +106,8 @@ function CheckInForm({ preCheckParams, storeId, setCheckedIn, contactTracing, se
         .then(res => res.json())
         .then(json => {
           if (json.length > 0) {
-            setPhone(json[0].phone)
+            setPhone(json[0].phone);
+            setNameInput(json[0].name);
             setRetrievedId(json[0]);
             setPreCheckError(false);
             setPhoneError(false);
@@ -118,13 +117,20 @@ function CheckInForm({ preCheckParams, storeId, setCheckedIn, contactTracing, se
           }
           setLoaderStatus(false)
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          setOverlayModal({
+            active: true,
+            title: "Oops",
+            message: err.message
+          })
+          setLoaderStatus(false);
+        })
 
     } else if (preCheckInput.length > 0) {
       setPreCheckError(true)
     }
     return (() => setLoaderStatus(false))
-  }, [preCheckInput, setCheckedIn, setLoaderStatus])
+  }, [preCheckInput, setCheckedIn, setLoaderStatus, setOverlayModal])
   
   function handlePreCheckChange(e) {
     setPreCheckInput(e.target.value);
@@ -176,9 +182,6 @@ function CheckInForm({ preCheckParams, storeId, setCheckedIn, contactTracing, se
 
   function handleCheckin(dataObj, preCheckId) {
 
-    console.log(dataObj);
-
-    console.log(preCheckId);
     const sendDataObj = new FormData();
     Object.keys(dataObj).forEach(inputName => {
       sendDataObj.append(inputName, dataObj[inputName]);
@@ -192,21 +195,38 @@ function CheckInForm({ preCheckParams, storeId, setCheckedIn, contactTracing, se
         fetch(API.newCheckin, { method: 'POST', body: sendDataObj })
           .then(res => res.json())
           .then(json => {
-            console.log(json)
+            if (json.statusCode === 400) {
+              setOverlayModal({
+                active: true,
+                title: json.error,
+                message: json.message
+              })
+
+            }
             if (json[0].id) {
               if (Location.info(storeId).contactTracing) HandleCookie.set('preCheckId', preCheckId, 365);
               HandleCookie.set('customerId', json[0].customerId, 0.5);
               HandleCookie.set('locationId', json[0].locationId, 0.5);            
               setCheckedIn(json[0]);
+              history.push(`/${storeId}/success/${json[0].customerId}`);
             } else {
-              console.log('oops');
+              setOverlayModal({
+                active: true,
+                title: "Oops",
+                message: "Something went wrong..."
+              })
             }
+            setLoading(false);
             setLoaderStatus(false);
-            
           })
           .catch(err => {
-            console.log(err);
             setLoaderStatus(false);
+            setLoading(false);
+            setOverlayModal({
+              active: true,
+              title: "Oops",
+              message: err.message
+            })
           })
 
       } else {

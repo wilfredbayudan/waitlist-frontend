@@ -88,14 +88,14 @@ function ContactTracingForm({ storeId, setOverlayModal, setLoaderStatus }) {
     let errorMessage;
     switch(inputName) {
       case 'firstName':
-        regex = /^[a-zA-Z][a-zA-Z ]{1,32}$/
+        regex = /^[a-zA-Z][a-zA-Z ']{1,32}$/
         result = regex.test(inputValue);
         if (!result) {
           errorMessage = 'Please enter a valid first name. Special characters not allowed.';
         }
         break;
       case 'lastName':
-        regex = /^[a-zA-Z][a-zA-Z ]{1,32}$/
+        regex = /^[a-zA-Z][a-zA-Z ']{1,32}$/
         result = regex.test(inputValue);
         if (!result) {
           errorMessage = 'Please enter a valid last name. Special characters not allowed.';
@@ -222,10 +222,18 @@ function ContactTracingForm({ storeId, setOverlayModal, setLoaderStatus }) {
       .then(res => res.json())
       .then(json => {
         setLoaderStatus(false);
+        setLoading(false);
         const data = json.message.data;
-        console.log(data);
-        HandleCookie.set('preCheckId', data.preCheckId, 365);
-        history.push(`/${storeId}/checkin/${data.preCheckId}`);
+        if (data.preCheckId) {
+          HandleCookie.set('preCheckId', data.preCheckId, 365);
+          history.push(`/${storeId}/checkin/${data.preCheckId}`);
+        } else {
+          setOverlayModal({
+            active: true,
+            title: 'Oops!',
+            message: `Something went wrong. Please try again.`
+          })
+        }
       })
       .catch(err => {
         setLoaderStatus(false);

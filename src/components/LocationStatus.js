@@ -4,7 +4,7 @@ import Error from "./Error";
 import Loader from "./Loader";
 import LocationCard from "./LocationCard";
 
-function LocationStatus({ storeId, setLoaderStatus }) {
+function LocationStatus({ storeId, setOverlayModal }) {
   const [locationData, setLocationData] = useState(false);
   const [errors, setErrors] = useState(false);
 
@@ -17,7 +17,7 @@ function LocationStatus({ storeId, setLoaderStatus }) {
   if (errors) return <Error message={errors} />
   if (!locationData) return <Loader active />
 
-  return <LocationCard storeId={storeId} locationData={locationData} />
+  return <LocationCard storeId={storeId} locationData={locationData} setOverlayModal={setOverlayModal} />
 
 }
 
