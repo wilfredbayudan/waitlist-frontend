@@ -25,7 +25,7 @@ function LocationCard({ storeId, locationData, setOverlayModal }) {
   const history = useHistory();
   const [isWaiting, setIsWaiting] = useState(false);
   const isOpen = locationData.isWaitlistOpen;
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const locationCookie = HandleCookie.get('locationId');
@@ -54,6 +54,10 @@ function LocationCard({ storeId, locationData, setOverlayModal }) {
             message: err.message
           })
         });
+    } else {
+      setTimeout(() => {
+        setLoading(false);
+      }, 1500)
     }
   }, [storeId, setOverlayModal]);
 

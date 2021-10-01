@@ -70,7 +70,7 @@ function CheckInForm({ preCheckParams, storeId, setCheckedIn, contactTracing, se
 
   useEffect(() => {
     if (nameInput.length > 0) {
-      const regex = /^[a-zA-Z][a-zA-Z ]{4,45}$/
+      const regex = /^[a-zA-Z][a-zA-Z '‘]{4,45}$/
       if (!regex.test(nameInput)) {
         setNameError('Please enter a valid name. Special characters not allowed.')
       } else {
@@ -152,6 +152,8 @@ function CheckInForm({ preCheckParams, storeId, setCheckedIn, contactTracing, se
     }
 
     if (preCheckError || !validatePhone(phone) || nameError || parseInt(additionalDetails.partySize) < 1) {
+      console.log(!validatePhone(phone), preCheckError, nameError);
+      console.log('Error here');
       setOverlayModal({
         active: true,
         title: 'Oops!',
@@ -222,11 +224,6 @@ function CheckInForm({ preCheckParams, storeId, setCheckedIn, contactTracing, se
           .catch(err => {
             setLoaderStatus(false);
             setLoading(false);
-            setOverlayModal({
-              active: true,
-              title: "Oops",
-              message: err.message
-            })
           })
 
       } else {

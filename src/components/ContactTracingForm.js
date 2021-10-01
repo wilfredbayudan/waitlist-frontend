@@ -192,6 +192,7 @@ function ContactTracingForm({ storeId, setOverlayModal, setLoaderStatus }) {
     preValidate();
 
     if (Object.keys(formErrors).filter(key => formErrors[key] !== null).length > 0 || formData.phone.length < 5) {
+      console.log('This is where the error is.')
       setOverlayModal({
         active: true,
         title: 'Oops!',
