@@ -57,7 +57,7 @@ function LocationCard({ storeId, locationData, setOverlayModal }) {
     } else {
       setTimeout(() => {
         setLoading(false);
-      }, 1500)
+      }, 800)
     }
   }, [storeId, setOverlayModal]);
 

@@ -207,15 +207,17 @@ function ContactTracingForm({ storeId, setOverlayModal, setLoaderStatus }) {
 
   function submitFormData(dataObj) {
     setLoaderStatus(true);
-    
+  
+    dataObj = {
+      ...dataObj,
+      phone: dataObj.phone.replace(/\D/g,'')
+    }
+
     console.log(dataObj);
 
     let sendData = new FormData();
     Object.keys(dataObj).forEach(inputName => {
       let value = dataObj[inputName];
-      if (inputName === "phone") {
-        value = dataObj.phone.replace(/\D/g,'');
-      }
       sendData.append(inputName, value);
     })
 
@@ -226,6 +228,24 @@ function ContactTracingForm({ storeId, setOverlayModal, setLoaderStatus }) {
         setLoading(false);
         const data = json.message.data;
         if (data.preCheckId) {
+          console.log(data);
+          fetch('http://localhost:5000/contacts', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json'
+            },
+            body: JSON.stringify({
+              ...dataObj,
+              signupDate: Date.now(),
+              id: data.preCheckId
+            })
+          })
+            .then(res => res.json())
+            .then(json => console.log(json))
+            .catch(err => console.log(err));
+
+
           HandleCookie.set('preCheckId', data.preCheckId, 365);
           history.push(`/${storeId}/checkin/${data.preCheckId}`);
         } else {

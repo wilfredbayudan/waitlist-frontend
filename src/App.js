@@ -12,6 +12,7 @@ import Loader from "./components/Loader";
 import Overview from "./components/Overview";
 import LocationRouter from "./components/LocationRouter";
 import OverlayModal from "./components/OverlayModal";
+import AdminRouter from "./components/admin/AdminRouter";
 
 function App() {
 
@@ -29,6 +30,9 @@ function App() {
       <Header />
       <main>
         <Switch>
+          <Route path="/admin">
+            <AdminRouter />
+          </Route>
           <Route path="/:storeId">
             <LocationRouter setLoaderStatus={setLoaderStatus} setOverlayModal={setOverlayModal} />
           </Route>
