@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { 
   BrowserRouter as Router, 
   Route, 
@@ -22,6 +22,28 @@ function App() {
     title: 'Overlay Title',
     message: 'Overlay Message'
   })
+  const [locationConfig, setLocationConfig] = useState(false);
+
+  useEffect(() => {
+    fetch('http://localhost:5000/locations')
+      .then(res => res.json())
+      .then(json => setLocationConfig(json))
+      .catch(err => console.log(err))
+  }, [])
+
+  const mainRoutes = (
+    <Switch>
+    <Route path="/admin" locationConfig={locationConfig}>
+      <AdminRouter />
+    </Route>
+    <Route path="/:storeId">
+      <LocationRouter setLoaderStatus={setLoaderStatus} setOverlayModal={setOverlayModal} locationConfig={locationConfig} />
+    </Route>
+    <Route path="/" exact>
+      <Overview />
+    </Route>
+  </Switch>
+  )
 
   return (
     <Router>
@@ -29,17 +51,7 @@ function App() {
       <Loader active={loaderStatus} />
       <Header />
       <main>
-        <Switch>
-          <Route path="/admin">
-            <AdminRouter />
-          </Route>
-          <Route path="/:storeId">
-            <LocationRouter setLoaderStatus={setLoaderStatus} setOverlayModal={setOverlayModal} />
-          </Route>
-          <Route path="/" exact>
-            <Overview />
-          </Route>
-        </Switch>
+        { locationConfig ? mainRoutes : <Loader active={true} />}
       </main>
       <Footer />
     </Router>

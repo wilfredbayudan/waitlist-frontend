@@ -1,23 +1,26 @@
-import LocationKeys from "../data/LocationKeys";
 import API from "../data/API";
 
 class Location {
 
-  static validate(storeId) {
-    return LocationKeys.find(store => store.id === parseInt(storeId) && store.waitwhileId !== null) ? true : false;
+  // static validate(storeId) {
+  //   return LocationKeys.find(store => store.id === parseInt(storeId) && store.waitwhileId !== null) ? true : false;
+  // }
+
+  static validate(config, storeId) {
+    return config.find(store => store.id === parseInt(storeId) && store.enabled) ? true : false;
   }
 
-  static waitwhileId(storeId) {
-    return LocationKeys.find(store => store.id === parseInt(storeId) && store.waitwhileId !== null).waitwhileId;
+  static waitwhileId(config, storeId) {
+    return config.find(store => store.id === parseInt(storeId) && store.waitwhileId !== null).waitwhileId;
   }
 
-  static info(storeId) {
-    return LocationKeys.find(store => store.id === parseInt(storeId));
+  static info(config, storeId) {
+    return config.find(store => store.id === parseInt(storeId));
   }
 
-  static async getWaitlist(storeId) {
-    if (this.validate(storeId)) {
-      const locationInfo = this.info(storeId);
+  static async getWaitlist(config, storeId) {
+    if (this.validate(config, storeId)) {
+      const locationInfo = this.info(config, storeId);
       const url = `${API.locationStatus}?wwid=${locationInfo.waitwhileId}`;
       return fetch(url)
         .then(res => res.json())
@@ -31,8 +34,8 @@ class Location {
     return false;
   }
 
-  static async isOpen(storeId) {
-    return this.getWaitlist(storeId)
+  static async isOpen(config, storeId) {
+    return this.getWaitlist(config, storeId)
       .then(res => {
         return res.isWaitlistOpen;
       })

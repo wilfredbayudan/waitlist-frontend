@@ -21,7 +21,7 @@ const NumWaiting = styled.h4`
   border-radius: 3px;
 `;
 
-function LocationCard({ storeId, locationData, setOverlayModal }) {
+function LocationCard({ storeId, locationData, setOverlayModal, locationConfig }) {
   const history = useHistory();
   const [isWaiting, setIsWaiting] = useState(false);
   const isOpen = locationData.isWaitlistOpen;
@@ -30,7 +30,7 @@ function LocationCard({ storeId, locationData, setOverlayModal }) {
   useEffect(() => {
     const locationCookie = HandleCookie.get('locationId');
     const customerIdCookie = HandleCookie.get('customerId')
-    if (locationCookie === Location.info(storeId).waitwhileId && customerIdCookie !== "") {
+    if (locationCookie === Location.info(locationConfig, storeId).waitwhileId && customerIdCookie !== "") {
       setLoading(true);
       // Check if current user is already on the waitlist
       fetch(`${API.customerStatus}?customerId=${customerIdCookie}`)
@@ -42,7 +42,7 @@ function LocationCard({ storeId, locationData, setOverlayModal }) {
             setIsWaiting(false);
             return;
           }
-          if (results[0].locationId === Location.info(storeId).waitwhileId) {
+          if (results[0].locationId === Location.info(locationConfig, storeId).waitwhileId) {
             setIsWaiting(results[0]);
           }
         })
@@ -59,10 +59,10 @@ function LocationCard({ storeId, locationData, setOverlayModal }) {
         setLoading(false);
       }, 800)
     }
-  }, [storeId, setOverlayModal]);
+  }, [storeId, setOverlayModal, locationConfig]);
 
   function handleJoinClick() {
-    let nextStep = Location.info(storeId).contactTracing ? 'join' : 'checkin';
+    let nextStep = Location.info(locationConfig, storeId).contactTracing ? 'join' : 'checkin';
     // If PreCheckID Cookie Exists, also push to checkin
     if (HandleCookie.get('preCheckId')) {
       console.log('Hi')
@@ -76,7 +76,7 @@ function LocationCard({ storeId, locationData, setOverlayModal }) {
   )
 
   const renderAlreadyWaiting = () => {
-    const ticketUrl = `https://app.waitwhile.com/l/${Location.info(storeId).shortName}/${isWaiting.publicId}`;
+    const ticketUrl = `https://app.waitwhile.com/l/${Location.info(locationConfig, storeId).shortName}/${isWaiting.publicId}`;
     return (
       <>
       <Notice color="#f1f1f1">
@@ -88,7 +88,7 @@ function LocationCard({ storeId, locationData, setOverlayModal }) {
   }
 
   return (
-    <Card title={Location.info(storeId).name}>
+    <Card title={Location.info(locationConfig, storeId).name}>
       Our waitlist is <StatusSpan isOpen={isOpen}>{isOpen ? 'open' : 'closed'}</StatusSpan> and there are
       <NumWaiting>{locationData.numWaiting}</NumWaiting>
       parties waiting

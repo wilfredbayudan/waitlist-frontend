@@ -4,13 +4,13 @@ import Location from "../classes/Location";
 import CheckinForm from "./CheckinForm";
 // import CheckinSuccess from "./CheckinSuccess";
 
-function Checkin({ storeId, setLoaderStatus, setOverlayModal, setCheckedIn }) {
+function Checkin({ storeId, setLoaderStatus, setOverlayModal, setCheckedIn, locationConfig }) {
   const history = useHistory();
   const preCheckParams = useParams().preCheckId;
 
   useEffect(() => {
     setLoaderStatus(true)
-    Location.isOpen(storeId)
+    Location.isOpen(locationConfig, storeId)
       .then(isOpen => {
         setLoaderStatus(false)
         if (!isOpen) {
@@ -30,11 +30,11 @@ function Checkin({ storeId, setLoaderStatus, setOverlayModal, setCheckedIn }) {
         });
         history.push(`/${storeId}`)
       })
-  }, [storeId, setLoaderStatus, setOverlayModal, history])
+  }, [storeId, setLoaderStatus, setOverlayModal, history, locationConfig])
 
   // if (checkedIn) return <CheckinSuccess storeId={storeId} checkInData={checkedIn} />
 
-  return <CheckinForm storeId={storeId} preCheckParams={preCheckParams} contactTracing={Location.info(storeId).contactTracing} setLoaderStatus={setLoaderStatus} setOverlayModal={setOverlayModal} setCheckedIn={setCheckedIn} />
+  return <CheckinForm storeId={storeId} preCheckParams={preCheckParams} contactTracing={Location.info(locationConfig, storeId).contactTracing} setLoaderStatus={setLoaderStatus} setOverlayModal={setOverlayModal} setCheckedIn={setCheckedIn} locationConfig={locationConfig} />
 }
 
 export default Checkin;

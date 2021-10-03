@@ -33,7 +33,7 @@ const ConsentNotice = styled.div`
   color: #1a1a1a;
 `;
 
-function CheckInForm({ preCheckParams, storeId, setCheckedIn, contactTracing, setLoaderStatus, setOverlayModal }) {
+function CheckInForm({ preCheckParams, storeId, setCheckedIn, contactTracing, setLoaderStatus, setOverlayModal, locationConfig }) {
 
   const history = useHistory();
 
@@ -43,7 +43,7 @@ function CheckInForm({ preCheckParams, storeId, setCheckedIn, contactTracing, se
   const [phone, setPhone] = useState('');
   const [phoneError, setPhoneError] = useState('');
   const [retrievedId, setRetrievedId] = useState(false);
-  const [disabledStatus, setDisabledStatus] = useState(Location.info(storeId).contactTracing ? true : false);
+  const [disabledStatus, setDisabledStatus] = useState(Location.info(locationConfig, storeId).contactTracing ? true : false);
   const [additionalDetails, setAdditionalDetails] = useState({
     partySize: '',
     tableType: 'First Available',
@@ -163,8 +163,8 @@ function CheckInForm({ preCheckParams, storeId, setCheckedIn, contactTracing, se
       setLoaderStatus(true);
       setLoading(true);
 
-      const sendPid = Location.info(storeId).contactTracing ? retrievedId.precheckid : 'NOTRAC';
-      const sendName = Location.info(storeId).contactTracing ? retrievedId.name : nameInput;
+      const sendPid = Location.info(locationConfig, storeId).contactTracing ? retrievedId.precheckid : 'NOTRAC';
+      const sendName = Location.info(locationConfig, storeId).contactTracing ? retrievedId.name : nameInput;
 
       // Set Form Data
       const dataObj = {
@@ -172,7 +172,7 @@ function CheckInForm({ preCheckParams, storeId, setCheckedIn, contactTracing, se
         preCheckId: sendPid,
         phone: phone.replace(/\D/g,''),
         storeId: storeId,
-        wwid: Location.waitwhileId(storeId),
+        wwid: Location.waitwhileId(locationConfig, storeId),
         name: sendName,
       }
 
@@ -190,7 +190,7 @@ function CheckInForm({ preCheckParams, storeId, setCheckedIn, contactTracing, se
     })
 
     // Check if still open before submitting
-    Location.isOpen(storeId)
+    Location.isOpen(locationConfig, storeId)
     .then(isOpen => {
       if (isOpen) {
         // Post checkin
@@ -206,7 +206,7 @@ function CheckInForm({ preCheckParams, storeId, setCheckedIn, contactTracing, se
 
             }
             if (json[0].id) {
-              if (Location.info(storeId).contactTracing) HandleCookie.set('preCheckId', preCheckId, 365);
+              if (Location.info(locationConfig, storeId).contactTracing) HandleCookie.set('preCheckId', preCheckId, 365);
               HandleCookie.set('customerId', json[0].customerId, 0.5);
               HandleCookie.set('locationId', json[0].locationId, 0.5);            
               setCheckedIn(json[0]);

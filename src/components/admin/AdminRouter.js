@@ -12,7 +12,7 @@ function AdminRouter() {
     if (!isAdmin) {
       history.push('/admin/login');
     }
-  }, [isAdmin])
+  }, [isAdmin, history])
 
   return (
     <Switch>

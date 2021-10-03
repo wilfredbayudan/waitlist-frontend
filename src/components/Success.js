@@ -15,7 +15,7 @@ const NumWaiting = styled.h4`
   border-radius: 3px;
 `;
 
-function Success ({ storeId, checkedIn, setCheckedIn, setOverlayModal, setLoaderStatus }) {
+function Success ({ storeId, checkedIn, setCheckedIn, setOverlayModal, setLoaderStatus, locationConfig }) {
 
   const history = useHistory();
   const customerIdParams = useParams().customerId;
@@ -39,7 +39,7 @@ function Success ({ storeId, checkedIn, setCheckedIn, setOverlayModal, setLoader
               })
               history.push(`/${storeId}`);
             } else {
-              if (json.results.length > 0 && json.results[0].locationId === Location.info(storeId).waitwhileId) {
+              if (json.results.length > 0 && json.results[0].locationId === Location.info(locationConfig, storeId).waitwhileId) {
                 setCheckedIn(json.results[0]);
               } else {
                 setComplete(true);
@@ -65,13 +65,13 @@ function Success ({ storeId, checkedIn, setCheckedIn, setOverlayModal, setLoader
       </Card>
     )
   } else {
-    const waitWhileLink = `https://app.waitwhile.com/l/${Location.info(storeId).shortName}/${checkedIn.publicId}`;
+    const waitWhileLink = `https://app.waitwhile.com/l/${Location.info(locationConfig, storeId).shortName}/${checkedIn.publicId}`;
 
     return (
       <Card title="You're on the waitlist!">
       {checkedIn.name.split(" ")[0]}, you're currently
       <NumWaiting>#{checkedIn.position}</NumWaiting>
-      in line at <b>{Location.info(storeId).name}</b>. We'll send you a text when it's your turn. Please have your vaccination/test documentation ready. In the meantime, why not <a href="https://genkisushiusa.com/waitmenuv3" alt="our menu" target="_blank" rel="noreferrer">check out the menu?</a>
+      in line at <b>{Location.info(locationConfig, storeId).name}</b>. We'll send you a text when it's your turn. Please have your vaccination/test documentation ready. In the meantime, why not <a href="https://genkisushiusa.com/waitmenuv3" alt="our menu" target="_blank" rel="noreferrer">check out the menu?</a>
       <a href={waitWhileLink} alt="Virtual Ticket"><Button variant="contained" disableElevation className="primaryBtn" type="button">View Virtual Ticket</Button></a>
       </Card>
     )
