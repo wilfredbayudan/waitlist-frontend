@@ -54,7 +54,7 @@ function Success ({ storeId, checkedIn, setCheckedIn, setOverlayModal, setLoader
 
     console.log(checkedIn);
 
-  }, [checkedIn, history, setOverlayModal, setLoaderStatus, customerIdParams, storeId, setCheckedIn, setComplete])
+  }, [checkedIn, history, setOverlayModal, setLoaderStatus, customerIdParams, storeId, setCheckedIn, setComplete, locationConfig])
 
   if (!checkedIn) return <Loader active />
 

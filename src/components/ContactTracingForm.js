@@ -228,7 +228,7 @@ function ContactTracingForm({ storeId, setOverlayModal, setLoaderStatus }) {
         setLoading(false);
         const data = json.message.data;
         if (data.preCheckId) {
-          console.log(data);
+          // Post to JSON Server
           fetch('http://localhost:5000/contacts', {
             method: 'POST',
             headers: {

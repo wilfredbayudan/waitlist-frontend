@@ -34,7 +34,7 @@ function App() {
   const mainRoutes = (
     <Switch>
     <Route path="/admin" locationConfig={locationConfig}>
-      <AdminRouter />
+      <AdminRouter setOverlayModal={setOverlayModal} />
     </Route>
     <Route path="/:storeId">
       <LocationRouter setLoaderStatus={setLoaderStatus} setOverlayModal={setOverlayModal} locationConfig={locationConfig} />

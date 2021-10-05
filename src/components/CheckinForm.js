@@ -193,6 +193,26 @@ function CheckInForm({ preCheckParams, storeId, setCheckedIn, contactTracing, se
     Location.isOpen(locationConfig, storeId)
     .then(isOpen => {
       if (isOpen) {
+        // If Contact Tracing Enabled, Post checkin to JSON server
+        if (Location.info(locationConfig, storeId).contactTracing) {
+          fetch('http://localhost:5000/checkins', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json'
+            },
+            body: JSON.stringify({
+              storeId,
+              preCheckId,
+              partySize: dataObj.partySize,
+              checkinDate: Date.now()
+            })
+          })
+            .then(res => res.json())
+            .then(json => console.log(json))
+            .catch(err => console.log(err));
+        }
+
         // Post checkin
         fetch(API.newCheckin, { method: 'POST', body: sendDataObj })
           .then(res => res.json())
