@@ -5,11 +5,12 @@ const Section = styled.section`
   color: #2e2e2e;
   background-color: #ffffff;
   padding: 10px 10px 20px 10px;
-  margin: 0 auto 0 auto;
+  margin: 10px auto 10px auto;
   border-radius: 3px;
   border: 1px solid #e7e7e7;
   box-shadow: 0 3px 10px rgb(0 0 0 / 0.4);
   max-width: 500px;
+  min-width: 280px;
   @media screen and (max-width: 500px) {
     width: ${props => props.fullWidth ? '100%' : 'auto'};
   }

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Switch, Route, useHistory, useRouteMatch } from "react-router-dom";
-import Home from "./Home";
+import Admin from "./Admin";
 import Login from "./Login";
 
-function AdminRouter({ setOverlayModal }) {
+function AdminRouter({ setOverlayModal, locationConfig, setLocationConfig }) {
   const [isAdmin, setIsAdmin] = useState(false);
   const history = useHistory();
   const match = useRouteMatch();
@@ -16,14 +16,11 @@ function AdminRouter({ setOverlayModal }) {
 
   return (
     <Switch>
-      <Route path={`${match.url}/`} exact>
-        <Home />
-      </Route>
-      <Route path={`${match.url}/login`}>
+      <Route path={`${match.url}/login`} exact>
         <Login setOverlayModal={setOverlayModal} setIsAdmin={setIsAdmin} />
       </Route>
-      <Route>
-        404
+      <Route path={`${match.url}/`}>
+        <Admin userInfo={isAdmin} setIsAdmin={setIsAdmin} locationConfig={locationConfig} setLocationConfig={setLocationConfig} />
       </Route>
     </Switch>
   )

@@ -21,7 +21,7 @@ const NumWaiting = styled.h4`
   border-radius: 3px;
 `;
 
-function LocationCard({ storeId, locationData, setOverlayModal, locationConfig }) {
+function LocationCard({ storeId, locationData, setOverlayModal, locationConfig, joinable=true }) {
   const history = useHistory();
   const [isWaiting, setIsWaiting] = useState(false);
   const isOpen = locationData.isWaitlistOpen;
@@ -72,7 +72,9 @@ function LocationCard({ storeId, locationData, setOverlayModal, locationConfig }
   }
 
   const renderJoinButton = (
+    joinable ? 
     <LoadingButton variant="contained" disableElevation className="primaryBtn" loading={loading} disabled={!isOpen} onClick={handleJoinClick}>Join Waitlist</LoadingButton>
+    : null
   )
 
   const renderAlreadyWaiting = () => {
@@ -89,7 +91,7 @@ function LocationCard({ storeId, locationData, setOverlayModal, locationConfig }
 
   return (
     <Card title={Location.info(locationConfig, storeId).name}>
-      Our waitlist is <StatusSpan isOpen={isOpen}>{isOpen ? 'open' : 'closed'}</StatusSpan> and there are
+      Waitlist is <StatusSpan isOpen={isOpen}>{isOpen ? 'open' : 'closed'}</StatusSpan> and there are
       <NumWaiting>{locationData.numWaiting}</NumWaiting>
       parties waiting
       { isWaiting ? renderAlreadyWaiting() : renderJoinButton }

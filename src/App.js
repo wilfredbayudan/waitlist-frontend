@@ -34,13 +34,13 @@ function App() {
   const mainRoutes = (
     <Switch>
     <Route path="/admin" locationConfig={locationConfig}>
-      <AdminRouter setOverlayModal={setOverlayModal} />
+      <AdminRouter setOverlayModal={setOverlayModal} locationConfig={locationConfig} setLocationConfig={setLocationConfig} />
     </Route>
     <Route path="/:storeId">
       <LocationRouter setLoaderStatus={setLoaderStatus} setOverlayModal={setOverlayModal} locationConfig={locationConfig} />
     </Route>
     <Route path="/" exact>
-      <Overview />
+      <Overview locationConfig={locationConfig} setOverlayModal={setOverlayModal} setLoaderStatus={setLoaderStatus} />
     </Route>
   </Switch>
   )
@@ -51,7 +51,7 @@ function App() {
       <Loader active={loaderStatus} />
       <Header />
       <main>
-        { locationConfig ? mainRoutes : <Loader active={true} />}
+        { locationConfig ? mainRoutes : null}
       </main>
       <Footer />
     </Router>
