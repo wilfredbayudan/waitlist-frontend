@@ -3,6 +3,10 @@ import styled from "styled-components";
 import Sidebar from "./Sidebar";
 import { Switch, Route, useRouteMatch } from "react-router-dom";
 
+import Contacts from "./Contacts";
+import Checkins from "./Checkins";
+import Locations from "./Locations";
+
 const AdminContainer = styled.div`
   width: 100%;
   height: 100%;
@@ -22,23 +26,22 @@ const AdminContent = styled.div`
   margin-left: 20px;
 `;
 
-function Admin({ userInfo, setIsAdmin }) {
+function Admin({ userInfo, setIsAdmin, locationConfig, setLocationConfig, setLoaderStatus, setOverlayModal }) {
   const match = useRouteMatch();
-
-  console.log(match.url);
+  
   return (
     <AdminContainer>
       <Sidebar userInfo={userInfo} setIsAdmin={setIsAdmin} />
       <AdminContent>
         <Switch>
           <Route path={`${match.url}/contacts`} exact>
-            Contacts Route
+            <Contacts setLoaderStatus={setLoaderStatus} setOverlayModal={setOverlayModal} />
           </Route>
           <Route path={`${match.url}/checkins`} exact>
-            Checkins Route
+            <Checkins setLoaderStatus={setLoaderStatus} setOverlayModal={setOverlayModal} locationConfig={locationConfig} />
           </Route>
           <Route path={`${match.url}/locations`} exact>
-            Locations Route
+            <Locations setLoaderStatus={setLoaderStatus} setOverlayModal={setOverlayModal} locationConfig={locationConfig} setLocationConfig={setLocationConfig} />
           </Route>
           <Route path={`${match.url}`} exact>
             Default Route

@@ -4,7 +4,7 @@ import { useHistory, NavLink, useRouteMatch } from "react-router-dom";
 import Notice from "../Notice";
 
 const SidebarContainer = styled.div`
-  width: 250px;
+  width: 200px;
   text-align: left;
 `;
 

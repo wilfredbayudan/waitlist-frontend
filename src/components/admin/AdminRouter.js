@@ -3,7 +3,7 @@ import { Switch, Route, useHistory, useRouteMatch } from "react-router-dom";
 import Admin from "./Admin";
 import Login from "./Login";
 
-function AdminRouter({ setOverlayModal, locationConfig, setLocationConfig }) {
+function AdminRouter({ setOverlayModal, locationConfig, setLocationConfig, setLoaderStatus }) {
   const [isAdmin, setIsAdmin] = useState(false);
   const history = useHistory();
   const match = useRouteMatch();
@@ -20,7 +20,7 @@ function AdminRouter({ setOverlayModal, locationConfig, setLocationConfig }) {
         <Login setOverlayModal={setOverlayModal} setIsAdmin={setIsAdmin} />
       </Route>
       <Route path={`${match.url}/`}>
-        <Admin userInfo={isAdmin} setIsAdmin={setIsAdmin} locationConfig={locationConfig} setLocationConfig={setLocationConfig} />
+        <Admin userInfo={isAdmin} setIsAdmin={setIsAdmin} locationConfig={locationConfig} setLocationConfig={setLocationConfig} setLoaderStatus={setLoaderStatus} setOverlayModal={setOverlayModal} />
       </Route>
     </Switch>
   )

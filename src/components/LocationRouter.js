@@ -15,6 +15,7 @@ function LocationRouter({ setLoaderStatus, setOverlayModal, locationConfig }) {
   // Validate Location
   if (Location.validate(locationConfig, storeIdParam)) {
     return (
+      // Switch
       <Switch>
         <Route path={`${match.url}/join`}>
           <Join storeId={storeIdParam} setLoaderStatus={setLoaderStatus} setOverlayModal={setOverlayModal} />
