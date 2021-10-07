@@ -31,6 +31,13 @@ function App() {
       .catch(err => console.log(err))
   }, [])
 
+  useEffect(() => {
+    // Turn off loader whenever modal appears
+    if (overlayModal.active) {
+      setLoaderStatus(false);
+    }
+  }, [overlayModal.active])
+
   const mainRoutes = (
     <Switch>
       <Route path="/admin" locationConfig={locationConfig}>

@@ -33,7 +33,7 @@ function LocationRouter({ setLoaderStatus, setOverlayModal, locationConfig }) {
     )
   } else {
     return (
-      <Card title="Oops!">Invalid Store ID</Card>
+      <Card title="Oops!">Waitlist not enabled for this location.</Card>
     )
   }
 }
