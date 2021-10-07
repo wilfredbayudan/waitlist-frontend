@@ -29,27 +29,31 @@ const AdminContent = styled.div`
 function Admin({ userInfo, setIsAdmin, locationConfig, setLocationConfig, setLoaderStatus, setOverlayModal }) {
   const match = useRouteMatch();
   
-  return (
-    <AdminContainer>
-      <Sidebar userInfo={userInfo} setIsAdmin={setIsAdmin} />
-      <AdminContent>
-        <Switch>
-          <Route path={`${match.url}/contacts`} exact>
-            <Contacts setLoaderStatus={setLoaderStatus} setOverlayModal={setOverlayModal} />
-          </Route>
-          <Route path={`${match.url}/checkins`} exact>
-            <Checkins setLoaderStatus={setLoaderStatus} setOverlayModal={setOverlayModal} locationConfig={locationConfig} />
-          </Route>
-          <Route path={`${match.url}/locations`} exact>
-            <Locations setLoaderStatus={setLoaderStatus} setOverlayModal={setOverlayModal} locationConfig={locationConfig} setLocationConfig={setLocationConfig} />
-          </Route>
-          <Route path={`${match.url}`} exact>
-            Default Route
-          </Route>
-        </Switch>
-      </AdminContent>
-    </AdminContainer>
-  )
+  if (userInfo) {
+    return (
+      <AdminContainer>
+        <Sidebar userInfo={userInfo} setIsAdmin={setIsAdmin} />
+        <AdminContent>
+          <Switch>
+            <Route path={`${match.url}/contacts`} exact>
+              <Contacts setLoaderStatus={setLoaderStatus} setOverlayModal={setOverlayModal} />
+            </Route>
+            <Route path={`${match.url}/checkins`} exact>
+              <Checkins setLoaderStatus={setLoaderStatus} setOverlayModal={setOverlayModal} locationConfig={locationConfig} />
+            </Route>
+            <Route path={`${match.url}/locations`} exact>
+              <Locations setLoaderStatus={setLoaderStatus} setOverlayModal={setOverlayModal} locationConfig={locationConfig} setLocationConfig={setLocationConfig} />
+            </Route>
+            <Route path={`${match.url}`} exact>
+              Default Route
+            </Route>
+          </Switch>
+        </AdminContent>
+      </AdminContainer>
+    )
+  } else {
+    return null;
+  }
 }
 
 export default Admin;

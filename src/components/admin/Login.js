@@ -35,7 +35,7 @@ function Login({ setOverlayModal, setIsAdmin }) {
             title: "Logged in!",
             message: `Nice to see you again, ${user.username}!`
           })
-          history.push(`/admin`)
+          history.push(`/admin/contacts`)
         } else {
           setOverlayModal({
             active: true,
