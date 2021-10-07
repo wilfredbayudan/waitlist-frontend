@@ -5,7 +5,7 @@ const FooterElement = styled.footer`
   flex-shrink: 0;
   align-items: center;
   background-color: #1a1a1a;
-  color: #d3d3d3;
+  color: #7f7f7f;
   height: 40px;
   display: flex;
   text-align: center;

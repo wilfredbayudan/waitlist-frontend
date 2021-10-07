@@ -23,7 +23,7 @@ function Checkins({ setLoaderStatus, setOverlayModal, locationConfig }) {
 
   useEffect(() => {
     setLoaderStatus(true);
-    fetch('http://localhost:5000/checkins')
+    fetch(`${process.env.REACT_APP_JSON_API}/checkins`)
       .then(res => res.json())
       .then(json => {
         setCheckins(json);
@@ -53,7 +53,7 @@ function Checkins({ setLoaderStatus, setOverlayModal, locationConfig }) {
 
   useEffect(() => {
     if (checkins.length > 0) {
-      fetch('http://localhost:5000/contacts')
+      fetch(`${process.env.REACT_APP_JSON_API}/contacts`)
         .then(res => res.json())
         .then(json => {
           setContacts(createContactsObject(json));

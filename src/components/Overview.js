@@ -11,16 +11,20 @@ const OverviewContainer = styled.div`
 function Overview({ setOverlayModal, locationConfig, setLoaderStatus }) {
 
   const renderLocations = locationConfig.map(location => {
-    return (
-      <LocationStatus 
-        key={location.id} 
-        storeId={location.id} 
-        setOverlayModal={setOverlayModal} 
-        locationConfig={locationConfig} 
-        setLoaderStatus={setLoaderStatus}
-        joinable={false}
-      />
-    )
+    if (location.enabled) {
+      return (
+        <LocationStatus 
+          key={location.id} 
+          storeId={location.id} 
+          setOverlayModal={setOverlayModal} 
+          locationConfig={locationConfig} 
+          setLoaderStatus={setLoaderStatus}
+          joinable={false}
+        />
+      )
+    } else {
+      return null;
+    }
   })
 
   return (

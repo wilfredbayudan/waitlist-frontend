@@ -4,7 +4,6 @@ import Card from "./Card";
 import Location from "../classes/Location";
 import styled from "styled-components";
 import Button from '@mui/material/Button';
-import API from "../data/API";
 import Loader from "./Loader";
 
 const NumWaiting = styled.h4`
@@ -27,7 +26,7 @@ function Success ({ storeId, checkedIn, setCheckedIn, setOverlayModal, setLoader
       if (!checkedIn && !customerIdParams) return history.push(`/${storeId}`);
       if (!checkedIn) {
         // Fetch Customer Information
-        fetch(`${API.customerStatus}?customerId=${customerIdParams}`)
+        fetch(`${process.env.REACT_APP_WAITLIST_API}/customer-status?customerId=${customerIdParams}`)
           .then(res => res.json())
           .then(json => {
             console.log(json);
@@ -47,12 +46,17 @@ function Success ({ storeId, checkedIn, setCheckedIn, setOverlayModal, setLoader
               }
             }
           })
-          .catch(err => setLoaderStatus(false))
+          .catch(err => {
+            setLoaderStatus(false);
+            setOverlayModal({
+              active: true,
+              title: "Oops!",
+              message: err.message
+            })
+          })
       }
     }
     checkCustomerStatus();
-
-    console.log(checkedIn);
 
   }, [checkedIn, history, setOverlayModal, setLoaderStatus, customerIdParams, storeId, setCheckedIn, setComplete, locationConfig])
 

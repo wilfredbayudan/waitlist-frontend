@@ -23,7 +23,7 @@ function Login({ setOverlayModal, setIsAdmin }) {
 
   // Simple auth using JSON Server
   function authUser(credentials) {
-    fetch(`http://localhost:5000/users`)
+    fetch(`${process.env.REACT_APP_JSON_API}/users`)
       .then(res => res.json())
       .then(json => {
         const user = json.find(user => user.username === credentials.username && user.password === credentials.password);

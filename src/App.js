@@ -25,10 +25,14 @@ function App() {
   const [locationConfig, setLocationConfig] = useState(false);
 
   useEffect(() => {
-    fetch('http://localhost:5000/locations')
+    fetch(`${process.env.REACT_APP_JSON_API}/locations`)
       .then(res => res.json())
       .then(json => setLocationConfig(json))
-      .catch(err => console.log(err))
+      .catch(err => setOverlayModal({
+        active: true,
+        title: "Oops",
+        message: err.message
+      }))
   }, [])
 
   useEffect(() => {

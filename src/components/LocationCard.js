@@ -4,7 +4,6 @@ import Card from "./Card";
 import Location from "../classes/Location";
 import styled from "styled-components";
 import HandleCookie from "../classes/HandleCookie";
-import API from "../data/API";
 import Notice from "./Notice";
 import LoadingButton from '@mui/lab/LoadingButton';
 
@@ -33,7 +32,7 @@ function LocationCard({ storeId, locationData, setOverlayModal, locationConfig, 
     if (locationCookie === Location.info(locationConfig, storeId).waitwhileId && customerIdCookie !== "") {
       setLoading(true);
       // Check if current user is already on the waitlist
-      fetch(`${API.customerStatus}?customerId=${customerIdCookie}`)
+      fetch(`${process.env.REACT_APP_WAITLIST_API}/customer-status?customerId=${customerIdCookie}`)
         .then(res => res.json())
         .then(json => {
           const results = json.results;
@@ -65,7 +64,6 @@ function LocationCard({ storeId, locationData, setOverlayModal, locationConfig, 
     let nextStep = Location.info(locationConfig, storeId).contactTracing ? 'join' : 'checkin';
     // If PreCheckID Cookie Exists, also push to checkin
     if (HandleCookie.get('preCheckId')) {
-      console.log('Hi')
       nextStep = `checkin/${HandleCookie.get('preCheckId')}`;
     }
     history.push(`/${storeId}/${nextStep}`);
@@ -79,14 +77,18 @@ function LocationCard({ storeId, locationData, setOverlayModal, locationConfig, 
 
   const renderAlreadyWaiting = () => {
     const ticketUrl = `https://app.waitwhile.com/l/${Location.info(locationConfig, storeId).shortName}/${isWaiting.publicId}`;
-    return (
-      <>
-      <Notice color="#f1f1f1">
-        Hey {isWaiting.firstName}, you are currently <b>#{isWaiting.position}</b> in line.
-      </Notice>
-      <a href={ticketUrl} alt="Virtual Ticket"><LoadingButton variant="contained" disableElevation className="primaryBtn">View Virtual Ticket</LoadingButton></a>
-      </>
-    )
+    if (joinable) {
+      return (
+        <>
+        <Notice color="#f1f1f1">
+          Hey {isWaiting.firstName}, you are currently <b>#{isWaiting.position}</b> in line.
+        </Notice>
+        <a href={ticketUrl} alt="Virtual Ticket"><LoadingButton variant="contained" disableElevation className="primaryBtn">View Virtual Ticket</LoadingButton></a>
+        </>
+      )
+    } else {
+      return null;
+    }
   }
 
   return (

@@ -1,5 +1,3 @@
-import API from "../data/API";
-
 class Location {
 
   // static validate(storeId) {
@@ -21,7 +19,7 @@ class Location {
   static async getWaitlist(config, storeId) {
     if (this.validate(config, storeId)) {
       const locationInfo = this.info(config, storeId);
-      const url = `${API.locationStatus}?wwid=${locationInfo.waitwhileId}`;
+      const url = `${process.env.REACT_APP_WAITLIST_API}/location-status?wwid=${locationInfo.waitwhileId}`;
       return fetch(url)
         .then(res => res.json())
         .then(waitlistDetails => {

@@ -13,7 +13,6 @@ import Location from "../classes/Location";
 import Card from "./Card";
 import styled from "styled-components";
 import LoadingButton from '@mui/lab/LoadingButton';
-import API from "../data/API";
 import WelcomeBack from "./WelcomeBack";
 import HandleCookie from "../classes/HandleCookie";
 import Notice from "./Notice";
@@ -101,8 +100,7 @@ function CheckInForm({ preCheckParams, storeId, setCheckedIn, contactTracing, se
 
     if (preCheckInput.length === 6) {
       setLoaderStatus(true)
-      const url = `${API.checkPrecheck}?pid=${preCheckInput}`;
-      fetch(url)
+      fetch(`${process.env.REACT_APP_WAITLIST_API}/check-precheckid?pid=${preCheckInput}`)
         .then(res => res.json())
         .then(json => {
           if (json.length > 0) {
@@ -195,7 +193,7 @@ function CheckInForm({ preCheckParams, storeId, setCheckedIn, contactTracing, se
       if (isOpen) {
         // If Contact Tracing Enabled, Post checkin to JSON server
         if (Location.info(locationConfig, storeId).contactTracing) {
-          fetch('http://localhost:5000/checkins', {
+          fetch(`${process.env.REACT_APP_JSON_API}/checkins`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -209,12 +207,14 @@ function CheckInForm({ preCheckParams, storeId, setCheckedIn, contactTracing, se
             })
           })
             .then(res => res.json())
-            .then(json => console.log(json))
+            .then(json => {
+              // Do stuff with JSON
+            })
             .catch(err => console.log(err));
         }
 
         // Post checkin
-        fetch(API.newCheckin, { method: 'POST', body: sendDataObj })
+        fetch(`${process.env.REACT_APP_WAITLIST_API}/new-checkin`, { method: 'POST', body: sendDataObj })
           .then(res => res.json())
           .then(json => {
             if (json.statusCode === 400) {

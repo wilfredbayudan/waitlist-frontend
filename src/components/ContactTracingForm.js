@@ -14,7 +14,6 @@ import styled from "styled-components";
 import Notice from "./Notice";
 import LoadingButton from '@mui/lab/LoadingButton';
 import HandleCookie from "../classes/HandleCookie";
-import API from "../data/API";
 
 const Form = styled.form`
   width: 100%;
@@ -213,15 +212,13 @@ function ContactTracingForm({ storeId, setOverlayModal, setLoaderStatus }) {
       phone: dataObj.phone.replace(/\D/g,'')
     }
 
-    console.log(dataObj);
-
     let sendData = new FormData();
     Object.keys(dataObj).forEach(inputName => {
       let value = dataObj[inputName];
       sendData.append(inputName, value);
     })
 
-    fetch(API.newCustomer, { method: 'POST', body: sendData })
+    fetch(`${process.env.REACT_APP_WAITLIST_API}/new-customer`, { method: 'POST', body: sendData })
       .then(res => res.json())
       .then(json => {
         setLoaderStatus(false);
@@ -229,7 +226,7 @@ function ContactTracingForm({ storeId, setOverlayModal, setLoaderStatus }) {
         const data = json.message.data;
         if (data.preCheckId) {
           // Post to JSON Server
-          fetch('http://localhost:5000/contacts', {
+          fetch(`${process.env.REACT_APP_JSON_API}/contacts`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -242,8 +239,14 @@ function ContactTracingForm({ storeId, setOverlayModal, setLoaderStatus }) {
             })
           })
             .then(res => res.json())
-            .then(json => console.log(json))
-            .catch(err => console.log(err));
+            .then(json => {
+              // Do stuff with JSON
+            })
+            .catch(err => setOverlayModal({
+              active: true,
+              title: "Oops!",
+              message: err.message
+            }));
 
 
           HandleCookie.set('preCheckId', data.preCheckId, 365);

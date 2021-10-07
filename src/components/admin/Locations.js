@@ -23,7 +23,7 @@ function Locations({ setLoaderStatus, setOverlayModal, locationConfig, setLocati
     // Update Config DB
     setLoaderStatus(true);
 
-    fetch(`http://localhost:5000/locations/${storeId}`, {
+    fetch(`${process.env.REACT_APP_JSON_API}/locations/${storeId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -65,7 +65,7 @@ function Locations({ setLoaderStatus, setOverlayModal, locationConfig, setLocati
     return (
       <LocationRow key={location.id} index={index}>
         <td>{location.id}</td>
-        <td><a href={`http://localhost:3000/${location.id}`} target="_blank" rel="noreferrer">{location.name}</a></td>
+        <td><a href={`${process.env.REACT_APP_BASE_URL}/${location.id}`} target="_blank" rel="noreferrer">{location.name}</a></td>
         <td>{location.shortName}</td>
         <td>{location.waitwhileId}</td>
         <td><Checkbox name="contactTracing" checked={location.contactTracing} onChange={(e) => handleConfigUpdate(e, location.id)} /></td>
