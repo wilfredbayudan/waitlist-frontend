@@ -20,7 +20,7 @@ function Header() {
 
   return (
     <HeaderElement>
-      <a href="https://www.genkisushiusa.com"><HeaderLogo src={GenkiLogo} /></a>
+      <a href="http://localhost:3000"><HeaderLogo src={GenkiLogo} /></a>
     </HeaderElement>
   )
 

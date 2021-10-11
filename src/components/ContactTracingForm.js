@@ -369,7 +369,7 @@ function ContactTracingForm({ storeId, setOverlayModal, setLoaderStatus }) {
       <hr />
       <LoadingButton variant="contained" disableElevation className="primaryBtn" loading={loading} type="submit">Next</LoadingButton>
       <p>
-      By submitting this form, you are agreeing to our <a href="https://www.genkisushiusa.com/privacy" target="_blank" rel="noreferrer">privacy policy</a>.
+      By submitting this form, you are agreeing to our <a href="https://waitwhile.com/privacy" target="_blank" rel="noreferrer">privacy policy</a>.
       </p>
     </Form>
   )

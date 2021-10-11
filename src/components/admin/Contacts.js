@@ -24,7 +24,7 @@ function Contacts({ setLoaderStatus, setOverlayModal }) {
   useEffect(() => {
     setLoaderStatus(true);
     // Fetch Contacts
-    fetch('http://localhost:5000/contacts')
+    fetch(`${process.env.REACT_APP_JSON_API}/contacts`)
       .then(res => res.json())
       .then(json => {
         setContactList(json);

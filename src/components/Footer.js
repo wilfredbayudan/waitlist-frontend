@@ -15,7 +15,7 @@ const FooterElement = styled.footer`
 
 function Footer() {
   return (
-    <FooterElement>© 2021 Genki Sushi USA, Inc</FooterElement>
+    <FooterElement>© 2021 Flat Table</FooterElement>
   )
 }
 
