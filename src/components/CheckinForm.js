@@ -208,7 +208,6 @@ function CheckInForm({ preCheckParams, storeId, setCheckedIn, contactTracing, se
           })
             .then(res => res.json())
             .then(json => {
-              // Do stuff with JSON
             })
             .catch(err => console.log(err));
         }
@@ -217,6 +216,7 @@ function CheckInForm({ preCheckParams, storeId, setCheckedIn, contactTracing, se
         fetch(`${process.env.REACT_APP_WAITLIST_API}/new-checkin`, { method: 'POST', body: sendDataObj })
           .then(res => res.json())
           .then(json => {
+            console.log(json);
             if (json.statusCode === 400) {
               setOverlayModal({
                 active: true,

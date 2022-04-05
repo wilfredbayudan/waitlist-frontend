@@ -363,7 +363,7 @@ function ContactTracingForm({ storeId, setOverlayModal, setLoaderStatus }) {
       <FormInput>
         <FormGroup>
           <FormControlLabel control={<Checkbox name="agreement" onChange={handleChange} value="agree" onClick={preValidate} required />} label="I agree that all information provided is true and accurate. I/we will not dine in if experiencing COVID-19 symptoms." />
-          <FormControlLabel control={<Checkbox name="marketing" onChange={handleChange} value="agree" />} label="Send my reuseable PreCheck ID and updates from Genki Sushi to the email address provided." />
+          <FormControlLabel control={<Checkbox name="marketing" onChange={handleChange} value="agree" />} label="Send my reuseable PreCheck ID and updates from Flat Table to the email address provided." />
         </FormGroup>
       </FormInput>
       <hr />

@@ -75,7 +75,7 @@ function Success ({ storeId, checkedIn, setCheckedIn, setOverlayModal, setLoader
       <Card title="You're on the waitlist!">
       {checkedIn.name.split(" ")[0]}, you're currently
       <NumWaiting>#{checkedIn.position}</NumWaiting>
-      in line at <b>{Location.info(locationConfig, storeId).name}</b>. We'll send you a text when it's your turn. Please have your vaccination/test documentation ready. In the meantime, why not <a href="https://genkisushiusa.com/waitmenuv3" alt="our menu" target="_blank" rel="noreferrer">check out the menu?</a>
+      in line at <b>{Location.info(locationConfig, storeId).name}</b>. We'll send you a text when it's your turn. Please have your vaccination/test documentation ready.
       <a href={waitWhileLink} alt="Virtual Ticket"><Button variant="contained" disableElevation className="primaryBtn" type="button">View Virtual Ticket</Button></a>
       </Card>
     )

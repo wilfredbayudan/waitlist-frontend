@@ -27,32 +27,39 @@ function LocationCard({ storeId, locationData, setOverlayModal, locationConfig, 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     const locationCookie = HandleCookie.get('locationId');
     const customerIdCookie = HandleCookie.get('customerId')
-    if (locationCookie === Location.info(locationConfig, storeId).waitwhileId && customerIdCookie !== "") {
-      setLoading(true);
-      // Check if current user is already on the waitlist
-      fetch(`${process.env.REACT_APP_WAITLIST_API}/customer-status?customerId=${customerIdCookie}`)
-        .then(res => res.json())
-        .then(json => {
-          const results = json.results;
-          setLoading(false);
-          if (results.length === 0) {
-            setIsWaiting(false);
-            return;
-          }
-          if (results[0].locationId === Location.info(locationConfig, storeId).waitwhileId) {
-            setIsWaiting(results[0]);
-          }
-        })
-        .catch(err => {
-          setLoading(false);
-          setOverlayModal({
-            active: true,
-            title: 'Oops',
-            message: err.message
+    if (locationCookie === Location.info(locationConfig, storeId).waitwhileId && customerIdCookie !== "") { 
+      function checkCustomer() {
+        // Check if current user is already on the waitlist
+        fetch(`${process.env.REACT_APP_WAITLIST_API}/customer-status?customerId=${customerIdCookie}`)
+          .then(res => res.json())
+          .then(json => {
+            const results = json.results;
+            setLoading(false);
+            if (results.length === 0) {
+              setIsWaiting(false);
+              return;
+            }
+            if (results[0].locationId === Location.info(locationConfig, storeId).waitwhileId) {
+              setIsWaiting(results[0]);
+            }
           })
-        });
+          .catch(err => {
+            setLoading(false);
+            setOverlayModal({
+              active: true,
+              title: 'Oops',
+              message: err.message
+            })
+          });
+      }
+      checkCustomer();
+      const interval = setInterval(() => checkCustomer(), 5000);
+
+      return(() => clearInterval(interval));
+      
     } else {
       setTimeout(() => {
         setLoading(false);
@@ -62,8 +69,8 @@ function LocationCard({ storeId, locationData, setOverlayModal, locationConfig, 
 
   function handleJoinClick() {
     let nextStep = Location.info(locationConfig, storeId).contactTracing ? 'join' : 'checkin';
-    // If PreCheckID Cookie Exists, also push to checkin
-    if (HandleCookie.get('preCheckId')) {
+    // If PreCheckID Cookie Exists and contact tracing is enabled, also push to checkin
+    if (HandleCookie.get('preCheckId') && Location.info(locationConfig, storeId).contactTracing) {
       nextStep = `checkin/${HandleCookie.get('preCheckId')}`;
     }
     history.push(`/${storeId}/${nextStep}`);

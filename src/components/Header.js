@@ -20,7 +20,7 @@ function Header() {
 
   return (
     <HeaderElement>
-      <a href="http://localhost:3000"><HeaderLogo src={GenkiLogo} /></a>
+      <a href="http://192.168.0.4:3000"><HeaderLogo src={GenkiLogo} /></a>
     </HeaderElement>
   )
 

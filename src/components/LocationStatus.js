@@ -9,9 +9,17 @@ function LocationStatus({ storeId, setOverlayModal, locationConfig, joinable }) 
   const [errors, setErrors] = useState(false);
 
   useEffect(() => {
-    Location.getWaitlist(locationConfig, storeId)
+    function checkWaitlist() {
+      Location.getWaitlist(locationConfig, storeId)
       .then(res => setLocationData(res))
       .catch(err => setErrors(err.message));
+    }
+    checkWaitlist();
+    const interval = setInterval(() => {
+      checkWaitlist();
+    }, 5000)
+
+    return (() => clearInterval(interval));
   }, [storeId, locationConfig])
 
   if (errors) return <Error message={errors} />
