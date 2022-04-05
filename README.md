@@ -1,71 +1,43 @@
-# Getting Started with Create React App
+# Waitlist Integration
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Live Demo: https://dev.jaybayudan.com/wwv2/102/
 
-## Available Scripts
+Since businesses began to reopen in Hawaii last year, local mandates required restaurants and other high-risk establishments to collect contact tracing information from their customers. To decrease large groups of people from gathering and to minimize the use of paper products, I had the idea to have customers provide their contact tracing information by scanning a QR code and filling out an online form. The online form would be integrated with a waitlist API (WaitWhile) and place the customer on a waitlist upon completion.
 
-In the project directory, you can run:
+Below is a brief overview of the experience. For demonstration purposes, a fictional restaurant restaurant called “Flat Table” has been created.
 
-### `npm start`
+![Scan QR Code](https://blog.jaybayudan.com/wp-content/uploads/2021/10/IMG_6073-edited.png)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+1. Customer scans QR code posted at restaurant and opens the link.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+![View Status](https://blog.jaybayudan.com/wp-content/uploads/2021/10/IMG_6090-edited.png)
 
-### `npm test`
+2. The location's information is displayed and prompts the customer to join the waitlist.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+![Submit Contact Tracing](https://blog.jaybayudan.com/wp-content/uploads/2021/10/IMG_6092-947x2048.png)
 
-### `npm run build`
+3. After the customer clicks “Join Waitlist”, they are reminded of local mandates to collect contact tracing information. A form to provide that information is displayed. Some counties do not require contact tracing, so this step can be hidden for specific locations.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+![Enter waitlist details](https://blog.jaybayudan.com/wp-content/uploads/2021/10/IMG_6093-1-947x2048.png)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+4. Upon completion of the contact tracing form, the customer is taken to a check-in details page where they confirm their phone number, table preference, party size, and special needs such as wheelchair access or high chairs for toddlers.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+![Confirmation](https://blog.jaybayudan.com/wp-content/uploads/2021/10/IMG_6094-947x2048.png)
 
-### `npm run eject`
+5. After confirming check-in details, the customer is taken to a success page where it shows their current place in line as well as a button to view their virtual ticket. They also receive a text message for confirmation.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+![Cookies](https://blog.jaybayudan.com/wp-content/uploads/2021/10/IMG_6095-1-edited.png)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+6. Cookies are used to store a customers “PreCheck ID”. A PreCheck ID is a unique set of 6 characters that is associated with a customer and allows them to checkin without re-entering all of their contact tracing information whenever they decide to dine-in. Cookies are also used to check and prevent customers from checking in again if they are already on the wait list.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+![Waitlist](https://blog.jaybayudan.com/wp-content/uploads/2021/10/Screen-Shot-2021-10-10-at-9.42.14-PM-edited.png)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+7. Customer is added to a waitlist using the WaitWhile API
 
-## Learn More
+![Admin](https://blog.jaybayudan.com/wp-content/uploads/2021/10/Screen-Shot-2021-10-10-at-9.43.18-PM-edited.png)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+8. A simple admin panel is available to view and sort through contacts and check-ins.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+![Settings](https://blog.jaybayudan.com/wp-content/uploads/2021/10/Screen-Shot-2021-10-10-at-9.44.33-PM-edited.png)
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-# genki-waitlist-frontend
+8. The admin may also enable/disable contact tracing options enable/disable the entire location.
