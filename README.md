@@ -6,7 +6,7 @@ Since businesses began to reopen in Hawaii last year, local mandates required re
 
 Below is a brief overview of the experience. For demonstration purposes, a fictional restaurant restaurant called “Flat Table” has been created.
 
-![Scan QR Code](https://blog.jaybayudan.com/wp-content/uploads/2021/10/IMG_6073-edited.png =250)
+<img src="https://blog.jaybayudan.com/wp-content/uploads/2021/10/IMG_6073-edited.png" height="300" />
 
 1. Customer scans QR code posted at restaurant and opens the link.
 
