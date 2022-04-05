@@ -2,7 +2,7 @@
 
 Live Demo: https://dev.jaybayudan.com/wwv2/102/
 
-Since businesses began to reopen in Hawaii last year, local mandates required restaurants and other high-risk establishments to collect contact tracing information from their customers. To decrease large groups of people from gathering and to minimize the use of paper products, I had the idea to have customers provide their contact tracing information by scanning a QR code and filling out an online form. The online form would be integrated with a waitlist API (WaitWhile) and place the customer on a waitlist upon completion.
+Since businesses began to reopen in Hawaii last year, local mandates required restaurants and other high-risk establishments to collect contact tracing information from their customers. To decrease large groups of people from gathering and to minimize the use of paper products, customers would provide their contact tracing information by scanning a QR code and filling out an online form. The online form is integrated with a waitlist API (WaitWhile) and place the customer on a waitlist upon completion.
 
 Below is a brief overview of the experience. For demonstration purposes, a fictional restaurant restaurant called “Flat Table” has been created.
 
